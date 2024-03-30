@@ -1,0 +1,19 @@
+{
+  "name": "express_basic",
+  "version": "1.0.0",
+  "description": "basic express api",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon ./src/app.js",
+    "prod": "NODE_ENV=production node ./src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Richard Dewan",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "mongoose": "^8.2.2",
+    "morgan": "^1.10.0"
+  }
+}
