@@ -4,55 +4,23 @@ const HttpStatusCode = require('../utils/httpStatusCode');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
-const tasks = [
-    {
-        id: 1,
-        text: 'Doctor Appointment',
-        day: 'Feb 5th at 2:30pm',
-        reminder: true
-    },
-    {
-        id: 2,
-        text: 'Meeting at School',
-        day: 'Feb 6th at 1:30pm',
-        reminder: true
-    },
-    {
-        id: 3,
-        text: 'Food Shopping',
-        day: 'Feb 5th at 2:30pm',
-        reminder: false
-
-    },
-    {
-        id: 4,
-        text: 'Sent Email',
-        day: 'Feb 5th at 2:30pm',
-        reminder: false
-    },
-    {
-        id: 5,
-        text: 'Buy Milk',
-        day: 'Feb 5th at 2:30pm',
-        reminder: false
-    },
-    {
-        id: 6,
-        text: 'Goto Gym',
-        day: 'Feb 5th at 2:30pm',
-        reminder: false
-    }
-]
-
 
 const getAllTasks = catchAsync(async (req, res, next) => {
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 5;
+    const skip = (page - 1) * limit;
 
-    const query = Task.find({});
+    const query = Task.find({}).skip(skip).limit(limit);
     const result = await query.select('-__v');
+    const total = await Task.countDocuments();
+    const toatlPage = Math.ceil(total / limit);
+    const currentPage = page;
 
     res.status(HttpStatusCode.OK).json({
         status: 'success',
-        results: result.length,
+        total: total,
+        toatlPage: toatlPage,
+        currentPage: currentPage,
         data: {
             tasks: result
         } 
