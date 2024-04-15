@@ -68,8 +68,7 @@ const patchTask = catchAsync(async (req, res, next) => {
     const taskId = req.params.id;
     const task = await Task.findByIdAndUpdate(taskId, req.body, {
         new: true,
-    }).catch(next(new AppError('No Task found with that ID', HttpStatusCode.NOT_FOUND)));  
-   
+    });
 
     res.status(HttpStatusCode.OK).json({
         status: 'success',        
@@ -83,8 +82,8 @@ const patchTask = catchAsync(async (req, res, next) => {
 
 const deleteTask = catchAsync(async (req, res, next) => {
     const taskId = req.params.id;
-    await Task.findByIdAndDelete(taskId)
-        .catch(next(new AppError('No Task found with that ID', HttpStatusCode.NOT_FOUND)));
+    const task = await Task.findByIdAndDelete(taskId);
+
     
     res.status(HttpStatusCode.NO_CONTENT).json({
         status: 'success',        
