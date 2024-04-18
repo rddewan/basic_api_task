@@ -10,7 +10,7 @@ const getAllTasks = catchAsync(async (req, res, next) => {
     const limit = parseInt(req.query.limit, 10) || 5;
     const skip = (page - 1) * limit;
 
-    const query = Task.find({}).skip(skip).limit(limit);
+    const query = Task.find({}).skip(skip).limit(limit).sort({ createdAt: -1 });
     const result = await query.select('-__v');
     const total = await Task.countDocuments();
     const toatlPage = Math.ceil(total / limit);
